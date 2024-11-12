@@ -36,4 +36,4 @@ run: npm run dev
 * Member Login page, password authentication
 * Member sign up page
 * Payment page -> revolute intergration pending
-* Member hompage -> should show logo based on paid or unpaid
+* Member hompage -> should show logo based on paid or unpaid, user setting management
