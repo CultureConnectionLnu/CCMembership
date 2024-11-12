@@ -29,3 +29,11 @@ There are a variety of member statuses which are used for various scenarios.
 
 run: npm install
 run: npm run dev
+
+## Tasks
+
+* Database design and set up
+* Member Login page, password authentication
+* Member sign up page
+* Payment page -> revolute intergration pending
+* Member hompage -> should show logo based on paid or unpaid
