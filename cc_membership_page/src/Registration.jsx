@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import CCLogo from "./assets/CCLogo.png";
+import SocialIcons from "./Socialmedia.jsx";
 
 function Registration() {
   const [username, setUsername] = useState("");
@@ -141,6 +142,7 @@ function Registration() {
           </button>
         </div>
       </div>
+      <SocialIcons />
     </div>
   );
 }

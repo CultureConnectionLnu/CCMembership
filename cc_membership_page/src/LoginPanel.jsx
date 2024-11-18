@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import CCLogo from "./assets/CCLogo.png";
+import SocialIcons from "./Socialmedia.jsx";
 
 function LoginPanel() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -76,6 +77,7 @@ function LoginPanel() {
           </button>
           </div>
         </form>
+        <SocialIcons />
       </div>
     );
   }

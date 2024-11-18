@@ -1,6 +1,7 @@
 
 import { useNavigate } from "react-router-dom";
 import CCLogo from "./assets/CCLogo.png";
+import SocialIcons from "./Socialmedia.jsx";
 
 function Submit() {
   const navigate = useNavigate();
@@ -32,6 +33,7 @@ function Submit() {
               </button>
             </div>
         </div>
+        <SocialIcons />
       </div>
     );
   }
