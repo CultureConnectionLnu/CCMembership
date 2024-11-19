@@ -12,8 +12,7 @@ function Home() {
   const handleRegistration = () => {
     navigate("/registartion");
   };
-
-
+  
   return (
     <div className="flex justify-center items-center">
       <div className="max-w-xl mx-auto p-6">

@@ -1,27 +1,20 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import CCLogo from "./assets/CCLogo.png";
 import SocialIcons from "./Socialmedia.jsx";
 
 function LoginPanel() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const auth = localStorage.getItem("isAuthenticated");
-    if (auth === "true") {
-      setIsAuthenticated(true);
-    }
-  }, []);
-
-
-  useEffect(() => {
-    if (isAuthenticated) {
-  // TODO: connect to database to check login system
-    }
-  }, [isAuthenticated]);
+//TODO: cleark intergration
+   
+  // useEffect(() => {
+  //   if (isAuthenticated) {
+  // // TODO: connect to  clerk database to check login system
+  //   }
+  // }, [isAuthenticated]);
 
 
   const handleRegistration = () => {

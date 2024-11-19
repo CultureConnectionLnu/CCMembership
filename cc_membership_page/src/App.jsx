@@ -8,7 +8,6 @@ function App() {
   return (
     <Router>
       <Routes>
-        {/* for the future to combine to the main web page */}
         <Route path="/" element={<Home />} />
         <Route path="/loginpanel" element={<LoginPanel />} />
         <Route path="/registartion" element={<Registration />} />

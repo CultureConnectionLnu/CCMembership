@@ -12,30 +12,7 @@ function Registration() {
   const [email, setEmail] = useState("");
   const navigate = useNavigate();
 
-  // handleRegistartion checking if account existor not
-  // const handleRegistration = (e) => {
-  // e.preventDefault();
-
-  // fetch(`${import.meta.env.VITE_API_URL}/login`, {
-  //   method: "POST",
-  //   headers: {
-  //     "Content-Type": "application/json",
-  //   },
-  //   body: JSON.stringify({ username, password }),
-  // })
-  //   .then((response) => response.json())
-  //   .then((data) => {
-  //     if (data.success) {
-  //       localStorage.setItem("isAuthenticated", "true");
-  //     } else {
-  //       alert("Some fields are empty");
-  //     }
-  //   })
-  //   .catch((error) => {
-  //     console.error("Error during registartion", error);
-  //     alert("Something went wrong. Please try again later.");
-  //   });
-  // };
+//TODO: intergrate clerk
 
   const handleBack = () => {
     navigate("/");
@@ -43,16 +20,16 @@ function Registration() {
 
   //uncomment when stuff done
 
-  // const handleSubmit = () => {
-  //   navigate("/submit");
-  // };
-
-  const handleChecks = () => {
-    // if (!handleRegistration) {
-    //   //TODO: Check whats wrong, if account exist already with same email or username
-    //   return({handleSubmit})
-    // }
+  const handleSubmit = () => {
+    navigate("/submit");
   };
+
+  // const handleChecks = () => {
+  //   // if (!handleRegistration) {
+  //   //   //TODO: Check whats wrong, if account exist already with same email or username
+  //   //   return({handleSubmit})
+  //   // }
+  // };
 
   return (
     <div className="flex-col justify-center columns-1 items-center min-h-screen">
@@ -126,7 +103,7 @@ function Registration() {
           />
         </div>
         <button
-          onClick={handleChecks}
+          onClick={handleSubmit}
           type="submit"
           className="bg-blue-500 sm:w-96 mx-auto mt-6 text-center p-4 rounded py-3 border-2 border-black shadow-custom hover:shadow-none transition-all hover:translate-x-1 translate-y-1 text-2xl font-bold"
         >
