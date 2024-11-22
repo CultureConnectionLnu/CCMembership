@@ -10,7 +10,7 @@ function Home() {
   };
 
   const handleRegistration = () => {
-    navigate("/registartion");
+    navigate("/registration");
   };
   
   return (
@@ -36,7 +36,7 @@ function Home() {
             onClick={handleRegistration}
             className="bg-blue-400 sm:w-96 mx-auto mt-6 text-center p-4 rounded py-3 border-2 border-black shadow-custom hover:shadow-none transition-all hover:translate-x-1 translate-y-1 text-2xl font-bold"
           >
-            Registartion
+            Registration
           </button>
           <SocialIcons />
         </div>

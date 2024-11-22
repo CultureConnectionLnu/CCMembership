@@ -18,7 +18,7 @@ function LoginPanel() {
 
 
   const handleRegistration = () => {
-    navigate("/registartion");
+    navigate("/registration");
   };
 
     return (  

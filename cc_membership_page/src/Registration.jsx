@@ -40,7 +40,7 @@ function Registration() {
       </div>
       <div className="p-6 text-center">
         <h1 className="text-2xl mb-4 text-center font-bold bg-neutral-300 sm:w-96 mx-auto mt-6 p-4 rounded-2xl py-3 border-2 border-black shadow-custom">
-          Registartion Panel
+          Registration Panel
         </h1>
         <div className="mb-2">
           <input
