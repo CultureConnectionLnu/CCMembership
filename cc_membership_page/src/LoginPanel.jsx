@@ -1,17 +1,48 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import CCLogo from "./assets/CCLogo.png";
-import SocialIcons from "./Socialmedia.jsx";
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useSignIn, useClerk } from '@clerk/clerk-react';
+import CCLogo from './assets/CCLogo.png';
+import SocialIcons from './Socialmedia.jsx';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import './fontawesome';
 
 function LoginPanel() {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [emailAddress, setEmailAddress] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState(null);
+  const { signIn } = useSignIn();
+  const { setSession } = useClerk();
   const navigate = useNavigate();
 
-  //TODO: clerk integration
+  const handleSignIn = async (e) => {
+    e.preventDefault();
+    try {
+      const signInAttempt = await signIn.create({
+        identifier: emailAddress,
+        password,
+      });
+
+      if (signInAttempt.status === 'complete') {
+        await setSession(signInAttempt.createdSessionId);
+        navigate('/submit'); // Redirect to the protected route
+      } else {
+        // Handle other statuses (e.g., email verification)
+      }
+    } catch (err) {
+      setError(err.errors ? err.errors[0].message : 'An error occurred');
+    }
+  };
 
   const handleRegistration = () => {
-    navigate("/registration");
+    navigate('/registration');
+  };
+
+  // Social sign-in handler
+  const handleSocialSignIn = (provider) => {
+    signIn.authenticateWithRedirect({
+      strategy: provider,
+      redirectUrl: '/submit',
+    });
   };
 
   return (
@@ -21,47 +52,66 @@ function LoginPanel() {
           <img src={CCLogo} className="rounded-full" alt="Logo" />
         </div>
       </div>
-      <div className="bg-white pb-10 w-96 mx-auto rounded-lg border-2 border-black focus:outline-none placeholder">
-      <form className="text-center">
-        <h1 className="p-6 text-2xl text-center font-bold">
-          Members Login Panel
-        </h1>
-        <div className="mb-2">
-          <input
-            type="text"
-            placeholder="Username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            className="w-[90%] mx-auto mt-2 text-center p-4 rounded border-2 border-black focus:outline-none text-2xl"
-            required
-          />
-        </div>
-        <div className="mb-2">
-          <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="w-[90%] mx-auto mt-6 text-center p-4 rounded border-2 border-black focus:outline-none text-2xl"
-            required
-          />
-        </div>
-        <button
-          type="submit"
-          className="bg-blue-500 w-[90%] mx-auto mt-6 text-center p-4 rounded border-2 border-black shadow-custom hover:shadow-none transition-all hover:translate-x-1 translate-y-1 text-2xl font-bold"
-        >
-          Log In
-        </button>
-        <div className="mb-2">
+      <div className="bg-white pb-10 w-96 mx-auto rounded-lg border-2 border-black">
+        <form className="text-center" onSubmit={handleSignIn}>
+          <h1 className="p-6 text-2xl text-center font-bold">
+            Members Login Panel
+          </h1>
+          <div className="mt-4">
+            <button
+              type="button"
+              onClick={() => handleSocialSignIn('oauth_google')}
+              className="bg-white w-[90%] mx-auto mt-2 text-center p-4 rounded border-2 border-black flex items-center justify-center text-2xl font-bold"
+            >
+              <FontAwesomeIcon icon={['fab', 'google']} className="h-6 w-6 mr-2" />
+              Sign in with Google
+            </button>
+            <button
+              type="button"
+              onClick={() => handleSocialSignIn('oauth_discord')}
+              className="bg-blue-400 w-[90%] mx-auto my-4 text-center p-4 rounded border-2 border-black flex items-center justify-center text-2xl font-bold"
+            >
+              <FontAwesomeIcon icon={['fab', 'discord']} className="h-8 w-8 mr-2" />
+              Sign in with Discord
+            </button>
+          </div>
+          {error && <p className="text-red-500">{error}</p>}
+          <div className="my-4">
+            <input
+              type="email"
+              placeholder="Email Address"
+              value={emailAddress}
+              onChange={(e) => setEmailAddress(e.target.value)}
+              className="w-[90%] mx-auto mt-2 text-center p-4 rounded border-2 border-black focus:outline-none text-2xl"
+              required
+            />
+          </div>
+          <div className="mb-2">
+            <input
+              type="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-[90%] mx-auto mt-6 text-center p-4 rounded border-2 border-black focus:outline-none text-2xl"
+              required
+            />
+          </div>
           <button
-            type="button"
-            onClick={handleRegistration}
-            className="bg-red-400 w-[90%] mx-auto mt-6 text-center p-4 rounded border-2 border-black shadow-custom hover:shadow-none transition-all hover:translate-x-1 translate-y-1 text-2xl font-bold"
+            type="submit"
+            className="bg-blue-500 w-[90%] mx-auto mt-6 text-center p-4 rounded border-2 border-black shadow-custom hover:shadow-none transition-all hover:-translate-x-1 hover:translate-y-1 text-2xl font-bold"
           >
-            Become a Member
+            Log In
           </button>
-        </div>
-      </form>
+          <div className="mb-2">
+            <button
+              type="button"
+              onClick={handleRegistration}
+              className="bg-red-400 w-[90%] mx-auto mt-6 text-center p-4 rounded border-2 border-black shadow-custom hover:shadow-none transition-all hover:-translate-x-1 hover:translate-y-1 text-2xl font-bold"
+            >
+              Become a Member
+            </button>
+          </div>
+        </form>
       </div>
       <SocialIcons />
     </div>
