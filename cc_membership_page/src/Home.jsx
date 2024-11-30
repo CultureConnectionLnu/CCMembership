@@ -10,7 +10,7 @@ function Home() {
   };
 
   const handleRegistration = () => {
-    navigate("/registartion");
+    navigate("/registration");
   };
   
   return (

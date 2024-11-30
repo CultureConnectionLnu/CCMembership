@@ -40,7 +40,7 @@ function App() {
 
         {/* Fallback for Unauthenticated Access */}
         <Route
-          path="*"
+          path="/"
           element={
             <SignedOut>
               <RedirectToSignIn />
