@@ -24,7 +24,7 @@ function LoginPanel() {
 
       if (signInAttempt.status === 'complete') {
         await setSession(signInAttempt.createdSessionId);
-        navigate('/submit'); // Redirect to the protected route
+        navigate('/submit');
       } else {
         // Handle other statuses (e.g., email verification)
       }
@@ -55,27 +55,19 @@ function LoginPanel() {
       <div className="bg-white pb-10 w-96 mx-auto rounded-lg border-2 border-black">
         <form className="text-center" onSubmit={handleSignIn}>
           <h1 className="p-6 text-2xl text-center font-bold">
-            Members Login Panel
+            Members Sign-in Panel
           </h1>
           <div className="mt-4">
             <button
               type="button"
               onClick={() => handleSocialSignIn('oauth_google')}
-              className="bg-white w-[90%] mx-auto mt-2 text-center p-4 rounded border-2 border-black flex items-center justify-center text-2xl font-bold"
+              className="bg-red-700 text-white w-[90%] mx-auto mt-2 text-center p-4 rounded border-2 border-black flex items-center justify-center text-2xl font-bold hover:bg-slate-500"
             >
               <FontAwesomeIcon icon={['fab', 'google']} className="h-6 w-6 mr-2" />
               Sign in with Google
             </button>
-            <button
-              type="button"
-              onClick={() => handleSocialSignIn('oauth_discord')}
-              className="bg-blue-400 w-[90%] mx-auto my-4 text-center p-4 rounded border-2 border-black flex items-center justify-center text-2xl font-bold"
-            >
-              <FontAwesomeIcon icon={['fab', 'discord']} className="h-8 w-8 mr-2" />
-              Sign in with Discord
-            </button>
           </div>
-          {error && <p className="text-red-500">{error}</p>}
+          {error && <p className="text-red-500 m-5 text-xl font-bold">{error}</p>}
           <div className="my-4">
             <input
               type="email"
