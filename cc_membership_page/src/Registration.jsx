@@ -1,33 +1,45 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useSignUp, useClerk } from '@clerk/clerk-react';
+import { useSignUp,} from '@clerk/clerk-react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import CCLogo from './assets/CCLogo.png';
 import SocialIcons from './Socialmedia.jsx';
 import './fontawesome';
 
 function Registration() {
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [username, setUsername] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [emailAddress, setEmailAddress] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
-  const { signUp } = useSignUp();
-  const { setSession } = useClerk();
+  // const { signUp } = useSignUp();
+  // const { setSession } = useClerk();
   const navigate = useNavigate();
+  const { isLoaded, signUp } = useSignUp();
+
+  if (!isLoaded) {
+    console.log("sadasd");
+  } else {
+    console.log("YES IAM HERE")
+  }
 
   const handleSignUp = async (e) => {
     e.preventDefault();
+    if (password !== confirmPassword) {
+      setError('Passwords do not match');
+      return;
+    }
     try {
-      const signUpAttempt = await signUp.create({
+      await signUp.create({
         emailAddress,
         password,
+        firstName,
+        lastName,
+        username,
       });
-
-      if (signUpAttempt.status === 'complete') {
-        await setSession(signUpAttempt.createdSessionId);
-        navigate('/submit');
-      } else {
-        // Handle other statuses (e.g., email verification)
-      }
+      // Proceed with verification or redirect
     } catch (err) {
       setError(err.errors ? err.errors[0].message : 'An error occurred');
     }
@@ -37,11 +49,10 @@ function Registration() {
     navigate('/loginpanel');
   };
 
-  // Social sign-up handler
   const handleSocialSignUp = (provider) => {
     signUp.authenticateWithRedirect({
       strategy: provider,
-      redirectUrl: '/submit',
+      redirectUrl: '/complete-profile',
     });
   };
 
@@ -77,6 +88,36 @@ function Registration() {
             />
           </div>
           <div className="mb-2">
+          <input
+              type="text"
+              placeholder="First Name"
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
+              required
+              className="w-[90%] mx-auto mt-2 text-center p-4 rounded border-2 border-black focus:outline-none text-2xl"
+            />
+          </div>
+          <div className="mb-2">
+            <input
+              type="text"
+              placeholder="Last Name"
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
+              required
+              className="w-[90%] mx-auto mt-2 text-center p-4 rounded border-2 border-black focus:outline-none text-2xl"
+            />
+          </div>
+          <div className="mb-2">
+            <input
+              type="text"
+              placeholder="Username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              required
+              className="w-[90%] mx-auto mt-2 text-center p-4 rounded border-2 border-black focus:outline-none text-2xl"
+            />
+          </div>
+          <div className="mb-2">
             <input
               type="password"
               placeholder="Password"
@@ -84,6 +125,16 @@ function Registration() {
               onChange={(e) => setPassword(e.target.value)}
               className="w-[90%] mx-auto mt-6 text-center p-4 rounded border-2 border-black focus:outline-none text-2xl"
               required
+            />
+          </div>
+          <div className="mb-2">
+            <input
+              type="password"
+              placeholder="Confirm Password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              required
+              className="w-[90%] mx-auto mt-2 text-center p-4 rounded border-2 border-black focus:outline-none text-2xl"
             />
           </div>
           <button
