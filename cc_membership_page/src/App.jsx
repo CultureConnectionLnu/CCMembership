@@ -3,12 +3,22 @@ import { SignedIn, SignedOut, RedirectToSignIn } from '@clerk/clerk-react';
 import Home from './Home';
 import LoginPanel from './LoginPanel';
 import Registration from './Registration';
+import CompleteProfile from './CompleteProfile';
 import Submit from './Submit';
 
 function App() {
   return (
     <Router>
       <Routes>
+        {/* Complete a profile page */}
+        <Route
+          path="/complete-profile"
+          element={
+            <SignedIn>
+              <CompleteProfile />
+            </SignedIn>
+          }
+        />
         {/* Public Routes */}
         <Route path="/" element={<Home />} />
         <Route
