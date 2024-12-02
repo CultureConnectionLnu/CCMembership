@@ -41,7 +41,8 @@ function LoginPanel() {
   const handleSocialSignIn = (provider) => {
     signIn.authenticateWithRedirect({
       strategy: provider,
-      redirectUrl: '/submit',
+      redirectUrl: '/',
+      redirectUrlComplete: '/submit', 
     });
   };
 

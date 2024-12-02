@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import SocialIcons from "./Socialmedia.jsx";
 import CCLogo from "./assets/CCLogo.png";
+import { SignOutButton } from '@clerk/clerk-react'
 
 function Home() {
   const navigate = useNavigate();
@@ -31,6 +32,7 @@ function Home() {
           >
             Login Panel
           </button>
+          <SignOutButton>
           <button
             type="submit"
             onClick={handleRegistration}
@@ -38,6 +40,7 @@ function Home() {
           >
             Registartion
           </button>
+          </SignOutButton>
           <SocialIcons />
         </div>
       </div>

@@ -1,4 +1,4 @@
-import { useUser, useClerk } from '@clerk/clerk-react';
+import { UserProfile ,useUser, useClerk } from '@clerk/clerk-react';
 
 function Submit() {
   const { user } = useUser();
@@ -9,7 +9,7 @@ function Submit() {
       <h1 className="text-2xl font-bold">
         Submit Page - Welcome, {user?.firstName || 'User'}!
       </h1>
-      {/* Your submit form or content goes here */}
+      <UserProfile />
       <button
         onClick={() => signOut()}
         className="mt-4 bg-red-500 text-white px-4 py-2 rounded"
