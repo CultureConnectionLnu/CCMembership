@@ -9,7 +9,7 @@ import './fontawesome';
 function LoginPanel() {
   const [emailAddress, setEmailAddress] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState(null);
+  const [error, setError] = useState(" ");
   const { signIn } = useSignIn();
   const { setSession } = useClerk();
   const navigate = useNavigate();
@@ -25,11 +25,14 @@ function LoginPanel() {
       if (signInAttempt.status === 'complete') {
         await setSession(signInAttempt.createdSessionId);
         navigate('/submit');
+        console.log(signInAttempt.status)
       } else {
+        console.log(signInAttempt.status)
         // Handle other statuses (e.g., email verification)
       }
     } catch (err) {
       setError(err.errors ? err.errors[0].message : 'An error occurred');
+      
     }
   };
 

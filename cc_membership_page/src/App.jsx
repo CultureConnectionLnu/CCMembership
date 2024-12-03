@@ -3,6 +3,7 @@ import { SignedIn, SignedOut, RedirectToSignIn } from '@clerk/clerk-react';
 import Home from './Home';
 import LoginPanel from './LoginPanel';
 import Registration from './Registration';
+import SigninError from './SigninError';
 import Submit from './Submit';
 
 function App() {
@@ -16,6 +17,14 @@ function App() {
           element={
             <SignedOut>
               <LoginPanel />
+            </SignedOut>
+          }
+        />
+        <Route
+          path="/SigninError"
+          element={
+            <SignedOut>
+              <SigninError />
             </SignedOut>
           }
         />
