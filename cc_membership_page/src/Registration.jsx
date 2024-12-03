@@ -13,10 +13,14 @@ function Registration() {
         <SignUp
         redirectUrl="/submit"
         appearance={{
+          baseTheme: "Neobrutalism",
+          layout: {
+            logoPlacement: "none"
+          },
           elements: {
             socialButtonsBlockButton:
-                'w-[90%] mx-auto mt-6 text-center p-4 rounded py-3 border-2 border-black shadow-custom hover:shadow-none transition-all hover:translate-x-1 translate-y-1 text-2xl font-bold',
-            formButtonPrimary: 'bg-blue-400 w-[90%] mx-auto mt-6 text-center p-4 rounded py-3 border-2 border-black shadow-custom hover:shadow-none transition-all hover:translate-x-1 translate-y-1 text-2xl font-bold',
+                'w-[100%] mx-auto mt-6 text-center p-4 rounded py-3 border-2 border-black shadow-custom hover:shadow-none transition-all hover:translate-x-1 translate-y-1 text-2xl font-bold',
+            formButtonPrimary: 'bg-blue-400 w-[100%] mx-auto mt-6 text-center p-4 rounded py-3 border-2 border-black shadow-custom hover:shadow-none transition-all hover:translate-x-1 translate-y-1 text-2xl font-bold',
             captchaInput: "w-[90%] mx-auto mt-2 text-center p-4 rounded border-2 border-black focus:outline-none text-2xl",
             captcha: "w-[90%] mx-auto mt-2 text-center p-4 rounded border-2 border-black focus:outline-none text-2xl"
           },
