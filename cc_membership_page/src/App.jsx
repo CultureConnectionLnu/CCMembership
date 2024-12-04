@@ -4,7 +4,7 @@ import Home from './Home';
 import LoginPanel from './LoginPanel';
 import Registration from './Registration';
 import SigninError from './SigninError';
-import Submit from './Submit';
+import Dashboard from './Dashboard';
 
 function App() {
   return (
@@ -39,10 +39,10 @@ function App() {
 
         {/* Protected Route */}
         <Route
-          path="/submit"
+          path="/dashboard"
           element={
             <SignedIn>
-              <Submit />
+              <Dashboard />
             </SignedIn>
           }
         />
