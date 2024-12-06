@@ -9,13 +9,15 @@ import Team from './Team';
 function Comp() {
   const { user, isLoaded, isSignedIn } = useUser();
   const navigate = useNavigate();
-  const [points, setPoints] = useState(null);
+  const [scoreboard, setScoreboard] = useState(null); // Entire scoreboard data
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [teamAllocations, setTeamAllocations] = useState({});
-  
-  // 10 default
-  const MAX_ALLOCATION = `${points}`;
+
+  // State to manage user's vote allocations
+  const [teamVotes, setTeamVotes] = useState({});
+
+  // Maximum votes a user can allocate
+  const MAX_VOTES = 10;
 
   const teams = [
     "Peaceful Christmas",
@@ -35,24 +37,23 @@ function Comp() {
     navigate("/dashboard");
   };
 
+  // Fetch scoreboard data on mount
   useEffect(() => {
     if (isLoaded && isSignedIn) {
-      fetchUserPoints();
+      fetchScoreboard();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoaded, isSignedIn]);
 
-  const fetchUserPoints = async () => {
+  const fetchScoreboard = async () => {
     if (!user) {
       setError('User not found.');
       setLoading(false);
       return;
     }
 
-    const userId = user.id;
-
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/score/${userId}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/scoreboard`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -60,67 +61,89 @@ function Comp() {
       });
 
       if (response.ok) {
-        const memberData = await response.json();
-        setPoints(memberData.points);
-      } else if (response.status === 404) {
-        setError('User not found in the competition.');
+        const data = await response.json();
+        setScoreboard(data);
+        initializeUserVotes(data);
       } else {
         const errorData = await response.json();
-        setError(errorData.error || 'An unexpected error occurred.');
+        setError(errorData.error || 'Failed to fetch scoreboard.');
       }
     } catch (err) {
-      console.error('Error fetching user points:', err);
+      console.error('Error fetching scoreboard:', err);
       setError('Failed to connect to the server. Please try again later.');
     } finally {
       setLoading(false);
     }
   };
 
-  // Handler to update allocations
-  const handleAllocationChange = (teamName, allocatedPoints) => {
-    setTeamAllocations(prevAllocations => ({
-      ...prevAllocations,
-      [teamName]: allocatedPoints,
-    }));
+  // Initialize user's vote allocations based on fetched scoreboard
+  const initializeUserVotes = (data) => {
+    const allocations = {};
+    data.Teams.forEach(team => {
+      const userVote = team.UserVoted.find(u => u.UserID === user.id);
+      allocations[team.TeamName] = userVote ? userVote.VotesAllocated : 0;
+    });
+    setTeamVotes(allocations);
   };
-  const totalAllocated = Object.values(teamAllocations).reduce((acc, curr) => acc + curr, 0);
-  const remainingAllocation = MAX_ALLOCATION - totalAllocated;
-  const remainingPoints = points !== null ? points - totalAllocated : 0;
 
-  // Handler to save allocations (optional)
-  const handleSaveAllocations = async () => {
+  // Handle vote allocation changes from Team components
+  const handleVoteChange = (teamName, votes) => {
+    setTeamVotes(prevVotes => {
+      const newVotes = { ...prevVotes, [teamName]: votes };
+      // Ensure total votes do not exceed MAX_VOTES
+      const totalVotes = Object.values(newVotes).reduce((acc, curr) => acc + curr, 0);
+      if (totalVotes > MAX_VOTES) {
+        return prevVotes; // Reject the change if it exceeds the maximum
+      }
+      return newVotes;
+    });
+  };
+
+  // Calculate total allocated votes
+  const totalAllocated = Object.values(teamVotes).reduce((acc, curr) => acc + curr, 0);
+
+  // Calculate remaining votes
+  const remainingVotes = MAX_VOTES - totalAllocated;
+
+  // Save allocations to backend
+  const handleSaveVotes = async () => {
     if (!user) {
       setError('User not authenticated.');
       return;
     }
 
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/allocate`, {
+      const payload = {
+        userId: user.id,
+        votes: teamVotes,
+      };
+
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/allocate-votes`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          userId: user.id,
-          allocations: teamAllocations,
-        }),
+        body: JSON.stringify(payload),
       });
 
+      const data = await response.json();
+
       if (response.ok) {
-        alert('Allocations saved successfully!');
+        alert(data.message);
+        // Optionally, refresh the scoreboard
+        fetchScoreboard();
       } else {
-        const errorData = await response.json();
-        setError(errorData.error || 'Failed to save allocations.');
+        alert(`Error: ${data.error}`);
       }
     } catch (err) {
-      console.error('Error saving allocations:', err);
+      console.error('Error saving votes:', err);
       setError('Failed to connect to the server. Please try again later.');
     }
   };
 
   return (
-    <div className="flex-col justify-center items-center min-h-screen">
-      <div className="h-70 w-70 mx-auto sm:w-96 sm:h-96">
+    <div className="flex-col justify-center items-center min-h-screen bg-gray-50 p-4 sm:p-6">
+      <div className="w-full max-w-3xl mx-auto">
         <div className="aspect-square">
           <img src={CCLogo} className="rounded-full" alt="Logo" />
         </div>
@@ -138,24 +161,23 @@ function Comp() {
               <p className="text-red-500">{error}</p>
             ) : (
               <p className="text-xl">
-                You have <span className="font-bold">{remainingPoints >= 0 ? remainingPoints : 0}</span> points left!
+                You have <span className="font-bold">{remainingVotes}</span> votes left!
               </p>
             )}
           </div>
 
           {/* Team List */}
-          {!loading && !error && points !== null && (
+          {!loading && !error && scoreboard && (
             <>
               <div className="w-full mt-6">
-                <h2 className="text-xl font-semibold mb-4">Allocate Points to Teams</h2>
+                <h2 className="text-xl font-semibold mb-4">Allocate Votes to Teams</h2>
                 {teams.map((team, index) => (
                   <Team
                     key={index}
                     name={team}
-                    allocatedPoints={teamAllocations[team] || 0}
-                    maxPoints={points !== null ? Math.min(MAX_ALLOCATION, points) : 10}
-                    onAllocationChange={handleAllocationChange}
-                    remainingAllocation={remainingAllocation + (teamAllocations[team] || 0)}
+                    allocatedVotes={teamVotes[team] || 0}
+                    onVoteChange={handleVoteChange}
+                    remainingVotes={remainingVotes + (teamVotes[team] || 0)}
                   />
                 ))}
               </div>
@@ -163,20 +185,24 @@ function Comp() {
               {/* Allocation Summary */}
               <div className="w-full mt-4 text-center">
                 <p className="text-lg">
-                  Total voted: <span className="font-bold">{totalAllocated}</span> / {MAX_ALLOCATION} points
+                  Total Allocated: <span className="font-bold">{totalAllocated}</span> / {MAX_VOTES} votes
                 </p>
                 <p className="text-lg">
-                  Remaining Votes: <span className="font-bold">{remainingAllocation >= 0 ? remainingAllocation : 0}</span> points
+                  Remaining Votes: <span className="font-bold">{remainingVotes}</span> votes
                 </p>
               </div>
 
               {/* Save Allocations Button */}
               <button
-                onClick={handleSaveAllocations}
-                className='w-[95%] bg-green-700 mx-auto text-center m-4 p-4 rounded py-3 border-2 font-bold text-xl border-black shadow-custom hover:shadow-none transition-all hover:translate-x-1 translate-y-1 text-white'
-                disabled={totalAllocated > MAX_ALLOCATION || remainingPoints < 0}
+                onClick={handleSaveVotes}
+                className={`w-[95%] bg-green-700 mx-auto text-center m-4 p-4 rounded py-3 border-2 font-bold text-xl border-black shadow-custom hover:shadow-none transition-all hover:translate-x-1 translate-y-1 text-white ${
+                  totalAllocated > MAX_VOTES || remainingVotes < 0
+                    ? 'opacity-50 cursor-not-allowed'
+                    : ''
+                }`}
+                disabled={totalAllocated > MAX_VOTES || remainingVotes < 0}
               >
-                Submit
+                Save Votes
               </button>
             </>
           )}

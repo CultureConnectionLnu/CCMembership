@@ -1,20 +1,21 @@
-// Team.jsx
 import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
-function Team({ name, allocatedPoints, onAllocationChange, remainingAllocation }) {
-  const [value, setValue] = useState(allocatedPoints);
+function Team({ name, allocatedVotes, onVoteChange, remainingVotes }) {
+  const [value, setValue] = useState(allocatedVotes);
 
   useEffect(() => {
-    setValue(allocatedPoints);
-  }, [allocatedPoints]);
+    setValue(allocatedVotes);
+  }, [allocatedVotes]);
 
-  // Calculate the maximum allocation for this team
   const handleSliderChange = (e) => {
     const newValue = Number(e.target.value);
     setValue(newValue);
-    onAllocationChange(name, newValue);
+    onVoteChange(name, newValue);
   };
+
+  // Calculate the maximum votes this slider can allow
+  const maxSlider = remainingVotes;
 
   return (
     <div className="w-full bg-gray-100 p-4 rounded-lg shadow-md mb-4">
@@ -22,15 +23,20 @@ function Team({ name, allocatedPoints, onAllocationChange, remainingAllocation }
       <input
         type="range"
         min="0"
-        max={remainingAllocation}
+        max={maxSlider}
         value={value}
         onChange={handleSliderChange}
         className="w-full"
+        aria-labelledby={`slider-${name}`}
+        aria-valuemin="0"
+        aria-valuemax={maxSlider}
+        aria-valuenow={value}
+        aria-valuetext={`Allocated ${value} votes to ${name}`}
       />
       <div className="flex justify-between text-sm text-gray-600">
         <span>0</span>
         <span>{value}</span>
-        <span>{remainingAllocation}</span>
+        <span>{maxSlider}</span>
       </div>
     </div>
   );
@@ -38,10 +44,9 @@ function Team({ name, allocatedPoints, onAllocationChange, remainingAllocation }
 
 Team.propTypes = {
   name: PropTypes.string.isRequired,
-  allocatedPoints: PropTypes.number.isRequired,
-  maxPoints: PropTypes.number.isRequired,
-  onAllocationChange: PropTypes.func.isRequired,
-  remainingAllocation: PropTypes.number.isRequired,
+  allocatedVotes: PropTypes.number.isRequired,
+  onVoteChange: PropTypes.func.isRequired,
+  remainingVotes: PropTypes.number.isRequired,
 };
 
 export default Team;
