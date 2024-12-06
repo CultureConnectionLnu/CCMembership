@@ -1,7 +1,6 @@
-// Scoreboard.jsx
 import { useEffect, useState } from 'react';
-import CCLogo from './assets/CCLogo.png'; // Adjust the path as necessary
-import SocialIcons from './Socialmedia.jsx'; // Assuming you have a Socialmedia component
+import CCLogo from './assets/CCLogo.png';
+import SocialIcons from './Socialmedia.jsx';
 import { useNavigate } from 'react-router-dom';
 
 function Scoreboard() {
@@ -13,7 +12,6 @@ function Scoreboard() {
 
   useEffect(() => {
     fetchScoreboard();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const fetchScoreboard = async () => {
@@ -47,11 +45,10 @@ function Scoreboard() {
   };
 
   return (
-    <div className="flex flex-col justify-center items-center min-h-screen bg-gray-50 p-4 sm:p-6">
-      <div className="w-full max-w-4xl mx-auto">
-        {/* Logo */}
+    <div className="flex flex-col justify-center items-center min-h-screen p-4 sm:p-6">
+      <div className="h-70 w-70">
         <div className="flex justify-center mb-6">
-          <img src={CCLogo} className="w-32 h-32 rounded-full" alt="Logo" />
+          <img src={CCLogo} className="w-48 h-48 rounded-full" alt="Logo" />
         </div>
 
         {/* Scoreboard Container */}
@@ -106,8 +103,6 @@ function Scoreboard() {
             </button>
           )}
         </div>
-
-        {/* Social Icons */}
         <SocialIcons />
       </div>
     </div>

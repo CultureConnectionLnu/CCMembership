@@ -1,4 +1,3 @@
-// Comp.jsx
 import { useUser } from '@clerk/clerk-react';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -9,7 +8,7 @@ import Team from './Team';
 function Comp() {
   const { user, isLoaded, isSignedIn } = useUser();
   const navigate = useNavigate();
-  const [scoreboard, setScoreboard] = useState(null); // Entire scoreboard data
+  const [scoreboard, setScoreboard] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -76,7 +75,7 @@ function Comp() {
     }
   };
 
-  // Initialize user's vote allocations based on fetched scoreboard
+  // Initialize users vote allocations based on fetched scoreboard
   const initializeUserVotes = (data) => {
     const allocations = {};
     data.Teams.forEach(team => {
@@ -93,7 +92,7 @@ function Comp() {
       // Ensure total votes do not exceed MAX_VOTES
       const totalVotes = Object.values(newVotes).reduce((acc, curr) => acc + curr, 0);
       if (totalVotes > MAX_VOTES) {
-        return prevVotes; // Reject the change if it exceeds the maximum
+        return prevVotes;
       }
       return newVotes;
     });
@@ -143,14 +142,14 @@ function Comp() {
 
   return (
     <div className="flex-col justify-center items-center min-h-screen  p-4 sm:p-6">
-      <div className="w-full max-w-3xl mx-auto">
+      <div className="h-70 w-70 mx-auto sm:w-96 sm:h-96">
         <div className="aspect-square">
           <img src={CCLogo} className="rounded-full" alt="Logo" />
         </div>
         <div className="bg-white mx-auto rounded-lg border-2 border-black flex flex-col items-center p-6 mt-4 shadow-lg">
           {/* Header */}
           <h1 className="text-2xl font-bold text-center pt-4">
-            Competition Status {user?.fullName ? `for ${user.fullName}` : ''}
+            You can vote {user?.fullName ? `${user.fullName}` : ''}
           </h1>
 
           {/* Content */}
@@ -169,8 +168,8 @@ function Comp() {
           {/* Team List */}
           {!loading && !error && scoreboard && (
             <>
-              <div className="w-full mt-6">
-                <h2 className="text-xl font-semibold mb-4">Allocate Votes to Teams</h2>
+              <div className="w-full">
+                <h2 className="text-xl font-semibold mb-4 text-center">Allocate Votes to Teams</h2>
                 {teams.map((team, index) => (
                   <Team
                     key={index}
@@ -202,7 +201,7 @@ function Comp() {
                 }`}
                 disabled={totalAllocated > MAX_VOTES || remainingVotes < 0}
               >
-                Save Votes
+                Submit Votes
               </button>
             </>
           )}
