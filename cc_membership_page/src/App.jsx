@@ -6,6 +6,7 @@ import Registration from './Registration';
 import SigninError from './SigninError';
 import Dashboard from './Dashboard';
 import Competition from './Comp';
+import Scoreboard from './Scoreboard';
 
 
 function App() {
@@ -48,12 +49,19 @@ function App() {
             </SignedIn>
           }
         />
-                {/* Protected Route */}
         <Route
           path="/competition"
           element={
             <SignedIn>
               <Competition />
+            </SignedIn>
+          }
+        />
+        <Route
+          path="/scoreboard"
+          element={
+            <SignedIn>
+              <Scoreboard />
             </SignedIn>
           }
         />

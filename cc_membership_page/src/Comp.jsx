@@ -129,8 +129,8 @@ function Comp() {
       const data = await response.json();
 
       if (response.ok) {
-        alert(data.message);
-        // Optionally, refresh the scoreboard
+        alert(data.message + " Thank you for your vote!");
+        navigate("/dashboard")
         fetchScoreboard();
       } else {
         alert(`Error: ${data.error}`);
@@ -142,7 +142,7 @@ function Comp() {
   };
 
   return (
-    <div className="flex-col justify-center items-center min-h-screen bg-gray-50 p-4 sm:p-6">
+    <div className="flex-col justify-center items-center min-h-screen  p-4 sm:p-6">
       <div className="w-full max-w-3xl mx-auto">
         <div className="aspect-square">
           <img src={CCLogo} className="rounded-full" alt="Logo" />

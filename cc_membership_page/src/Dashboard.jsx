@@ -59,6 +59,11 @@ function Dashboard() {
     }
   };
 
+  const handleButtonScoreboard = async () => {
+    navigate("/scoreboard")
+  }
+
+
   // Optional: Fetch username if not directly available from Clerk
   // Uncomment and modify if necessary 
   /*
@@ -101,12 +106,22 @@ function Dashboard() {
           
           <button
             onClick={handleButtonClick}
-            className={`w-[95%] bg-yellow-700 mx-auto text-center m-10 p-4 rounded py-3 border-2 font-bold text-xl border-black shadow-custom hover:shadow-none transition-all hover:translate-x-1 translate-y-1 ${
+            className={`w-[95%] bg-yellow-700 mx-auto text-center m-0 p-4 rounded py-3 border-2 font-bold text-xl border-black shadow-custom hover:shadow-none transition-all hover:translate-x-1 translate-y-1 ${
               loading ? 'opacity-50 cursor-not-allowed' : ''
             }`}
             disabled={loading}
           >
             {loading ? 'Processing...' : 'Gingerbread House Competition'}
+          </button>
+
+          <button
+            onClick={handleButtonScoreboard}
+            className={`w-[95%] bg-violet-800 mx-auto text-center m-6 p-4 rounded py-3 border-2 font-bold text-xl border-black shadow-custom hover:shadow-none transition-all hover:translate-x-1 translate-y-1 ${
+              loading ? 'opacity-50 cursor-not-allowed' : ''
+            }`}
+            disabled={loading}
+          >
+            {loading ? 'Processing...' : 'Gingerbread House Competition Scoreboard'}
           </button>
           
           {error && <p className="text-red-500">{error}</p>}

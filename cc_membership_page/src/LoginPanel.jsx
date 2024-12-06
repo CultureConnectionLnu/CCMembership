@@ -11,7 +11,7 @@ function LoginPanel() {
         </div>
       
       <SignIn
-      forceRedirectUrl="/submit"
+      forceRedirectUrl="/dashboard"
         appearance={{
 
           layout: {
