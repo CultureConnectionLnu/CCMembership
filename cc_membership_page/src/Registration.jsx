@@ -12,7 +12,6 @@ function Registration() {
       </div>
         <SignUp
         forceRedirectUrl="/dashboard"
-        afterSignUpUrl="/dashboard"
         appearance={{
           layout: {
             logoPlacement: "none"

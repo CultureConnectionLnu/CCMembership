@@ -7,7 +7,7 @@ function SigninError() {
   const navigate = useNavigate();
 
   const handleRegistration = () => {
-    navigate('/registration');
+    navigate('/sign-up');
   };
 
 

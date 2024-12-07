@@ -1,13 +1,12 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { SignedIn, SignedOut, RedirectToSignIn } from '@clerk/clerk-react';
-import Home from './Home';
-import LoginPanel from './LoginPanel';
-import Registration from './Registration';
-import SigninError from './SigninError';
-import Dashboard from './Dashboard';
-import Competition from './Comp';
-import Scoreboard from './Scoreboard';
-
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { SignedIn, SignedOut, RedirectToSignIn } from "@clerk/clerk-react";
+import Home from "./Home";
+import LoginPanel from "./LoginPanel";
+import Registration from "./Registration";
+import SigninError from "./SigninError";
+import Dashboard from "./Dashboard";
+import Competition from "./Comp";
+import Scoreboard from "./Scoreboard";
 
 function App() {
   return (
@@ -16,7 +15,7 @@ function App() {
         {/* Public Routes */}
         <Route path="/" element={<Home />} />
         <Route
-          path="/loginpanel"
+          path="/sign-in"
           element={
             <SignedOut>
               <LoginPanel />
@@ -32,7 +31,7 @@ function App() {
           }
         />
         <Route
-          path="/registration"
+          path="/sign-up"
           element={
             <SignedOut>
               <Registration />
@@ -68,7 +67,7 @@ function App() {
 
         {/* Fallback for Unauthenticated Access */}
         <Route
-          path="/"
+          path="*"
           element={
             <SignedOut>
               <RedirectToSignIn />
