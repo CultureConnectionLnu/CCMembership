@@ -63,6 +63,10 @@ function Dashboard() {
     navigate("/scoreboard")
   }
 
+  const handleButtonMembershipCard = async () => {
+    navigate ("/card")
+  }
+
 
   // Optional: Fetch username if not directly available from Clerk
   // Uncomment and modify if necessary 
@@ -122,6 +126,16 @@ function Dashboard() {
             disabled={loading}
           >
             {loading ? 'Processing...' : 'Gingerbread House Competition Scoreboard'}
+          </button>
+
+          <button
+            onClick={handleButtonMembershipCard}
+            className={`w-[95%] bg-[#85b2c2] mx-auto text-center m-6 p-4 rounded py-3 border-2 font-bold text-xl border-black shadow-custom hover:shadow-none transition-all hover:translate-x-1 translate-y-1 ${
+              loading ? 'opacity-50 cursor-not-allowed' : ''
+            }`}
+            disabled={loading}
+          >
+            {loading ? 'Processing...' : 'Membership Card'}
           </button>
           
           {error && <p className="text-red-500">{error}</p>}

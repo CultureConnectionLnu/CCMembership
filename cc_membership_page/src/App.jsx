@@ -7,6 +7,7 @@ import SigninError from "./SigninError";
 import Dashboard from "./Dashboard";
 import Competition from "./Comp";
 import Scoreboard from "./Scoreboard";
+import Card from "./Card";
 
 function App() {
   return (
@@ -72,6 +73,14 @@ function App() {
             <SignedOut>
               <RedirectToSignIn />
             </SignedOut>
+          }
+        />
+        <Route
+          path="/card"
+          element={
+            <SignedIn>
+              <Card />
+            </SignedIn>
           }
         />
       </Routes>
